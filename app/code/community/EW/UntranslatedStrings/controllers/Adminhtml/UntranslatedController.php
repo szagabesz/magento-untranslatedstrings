@@ -184,4 +184,29 @@ class EW_UntranslatedStrings_Adminhtml_UntranslatedController extends Mage_Admin
 
         $this->_prepareDownloadResponse($fileName, $content);
     }
+
+    /**
+     * All log files per language can be downloaded together as zip file
+     */
+    public function exportZipAction()
+    {
+        // reset filtering so the ZIP file will contains all the log entries
+        $this->getRequest()->setParam('filter', null);
+        $this->getRequest()->setParam('dir', null);
+        $this->getRequest()->setParam('sort', null);
+
+        /** @var EW_UntranslatedStrings_Model_ExportToZip $model */
+        $model = Mage::getModel('ew_untranslatedstrings/exportToZip');
+        $zipFile = $model->getZip();
+        $fileName = basename($zipFile);
+
+        $this->getResponse()->clearAllHeaders();
+        $this->getResponse()->setHeader('Content-Type', 'application/zip');
+        $this->getResponse()->setHeader('Content-Disposition', "attachment; filename=$fileName");
+        $this->getResponse()->setHeader('Content-Length', filesize($zipFile));
+        $this->getResponse()->sendHeaders();
+
+        readfile($zipFile);
+        exit;
+    }
 }

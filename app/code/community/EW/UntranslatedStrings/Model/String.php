@@ -41,4 +41,21 @@ class EW_UntranslatedStrings_Model_String extends Mage_Core_Model_Abstract
 
         $this->getResource()->purgeStrings($purgeIds);
     }
+
+    /**
+     * List locale codes where we have found untranslated strings
+     *
+     * @return array
+     */
+    public function getUntranslatedLocaleCodes()
+    {
+        $collection = Mage::getResourceModel('ew_untranslatedstrings/string_collection');
+        $collection->configureSummary();
+        $localeCodes = [];
+        foreach ($collection->load() as $summary) {
+            $localeCodes[] = $summary['locale'];
+        }
+
+        return $localeCodes;
+    }
 }
