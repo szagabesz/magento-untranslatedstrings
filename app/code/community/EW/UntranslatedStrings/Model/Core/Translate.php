@@ -244,7 +244,7 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
                 'text' => $text,
                 'store_id' => Mage::app()->getStore()->getId(),
                 'locale' => $locale,
-                'url' => Mage::helper('core/url')->getCurrentUrl()
+                'url' => $this->getCurrentUrl(),
             );
 
             $strings[$locale] = $localeStrings; //update "big" array
@@ -294,5 +294,12 @@ class EW_UntranslatedStrings_Model_Core_Translate extends Mage_Core_Model_Transl
         // END EDIT
         $this->_addData($this->_getFileData($file), false, $forceReload);
         return $this;
+    }
+
+    protected function getCurrentUrl()
+    {
+        $baseUrl = trim(Mage::app()->getStore()->getBaseUrl(), '/');
+        $requestUri = trim(Mage::app()->getRequest()->getRequestString(), '/');
+        return $baseUrl . '/' . $requestUri;
     }
 }
