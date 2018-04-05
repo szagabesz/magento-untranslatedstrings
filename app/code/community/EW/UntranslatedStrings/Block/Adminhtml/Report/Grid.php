@@ -80,7 +80,8 @@ class EW_UntranslatedStrings_Block_Adminhtml_Report_Grid extends Mage_Adminhtml_
             'type'      => 'number'
         ));
 
-        $this->addExportType('*/*/exportCsv', $this->__('CSV'));
+        $this->addExportType('*/*/exportCsv', $this->__('CSV (contains filter result below)'));
+        $this->addExportType('*/*/exportZip', $this->__('ZIP (contains all per language)'));
 
         return parent::_prepareColumns();
     }
